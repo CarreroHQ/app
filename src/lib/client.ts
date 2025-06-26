@@ -3,11 +3,11 @@ import { Collection, Client as DiscordClient } from "discord.js";
 import { env } from "~/lib/env";
 import type { Event, Item, SlashCommand } from "~/lib/registry";
 
-import * as _core from "~/modules/core/commands";
+import * as commands from "~/modules/core/commands";
 import * as dummy from "~/modules/dummy";
 
 export class Client extends DiscordClient {
-  readonly modules = [_core, dummy];
+  readonly modules = [commands, dummy];
   readonly commands = new Collection<string, Omit<SlashCommand, "type">>();
 
   constructor() {
