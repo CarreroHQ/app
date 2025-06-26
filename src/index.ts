@@ -21,13 +21,13 @@ if (process.argv.includes("deploy")) {
       body: payload
     });
     console.log(`Successfully deployed ${payload.length} command(s).`);
-    process.exitCode = 0;
+    process.exit(0);
   } catch (error) {
     console.error(
       "Failed to deploy commands:",
       error instanceof Error ? error.message : error
     );
-    process.exitCode = 1;
+    process.exit(1);
   }
 }
 
