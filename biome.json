@@ -1,0 +1,111 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "ignoreUnknown": false
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "complexity": {
+        "recommended": true,
+        "noUselessStringConcat": "on",
+        "useSimplifiedLogicExpression": "on",
+        "useWhile": "on"
+      },
+      "nursery": {
+        "noAwaitInLoop": "on",
+        "noConstantBinaryExpression": "on",
+        "noFloatingPromises": "on",
+        "noGlobalDirnameFilename": "on",
+        "noImportCycles": "on",
+        "noSecrets": "on",
+        "noShadow": "on",
+        "noTsIgnore": "on",
+        "noUselessBackrefInRegex": "on",
+        "noUselessEscapeInString": "on",
+        "noUselessUndefined": "on",
+        "useConsistentObjectDefinition": "on",
+        "useExhaustiveSwitchCases": "on",
+        "useExportsLast": "on",
+        "useIndexOf": "on",
+        "useIterableCallbackReturn": "on",
+        "useJsonImportAttribute": "on",
+        "useNumericSeparators": "on",
+        "useReadonlyClassProperties": "on",
+        "useSingleJsDocAsterisk": "on"
+      },
+      "style": {
+        "recommended": true,
+        "noCommonJs": "on",
+        "noDefaultExport": "on",
+        "noEnum": "on",
+        "noExportedImports": "on",
+        "noInferrableTypes": "on",
+        "noNamespace": "on",
+        "noNegationElse": "on",
+        "noNestedTernary": "on",
+        "noParameterAssign": "on",
+        "noParameterProperties": "on",
+        "noShoutyConstants": "on",
+        "noSubstr": "on",
+        "noUnusedTemplateLiteral": "on",
+        "noUselessElse": "on",
+        "noYodaExpression": "on",
+        "useAsConstAssertion": "on",
+        "useAtIndex": "on",
+        "useCollapsedElseIf": "on",
+        "useCollapsedIf": "on",
+        "useConsistentArrayType": "on",
+        "useConsistentBuiltinInstantiation": "on",
+        "useConsistentMemberAccessibility": "on",
+        "useDefaultParameterLast": "on",
+        "useEnumInitializers": "on",
+        "useExplicitLengthCheck": "on",
+        "useFilenamingConvention": {
+          "level": "on",
+          "options": {
+            "filenameCases": ["kebab-case"]
+          }
+        },
+        "useForOf": "on",
+        "useShorthandAssign": "on",
+        "useThrowNewError": "on",
+        "useTrimStartEnd": "on"
+      },
+      "suspicious": {
+        "recommended": true,
+        "noEmptyBlockStatements": "on",
+        "noEvolvingTypes": "on",
+        "noGlobalIsFinite": "off",
+        "noGlobalIsNan": "off",
+        "noVar": "on",
+        "useAwait": "on",
+        "useGuardForIn": "on"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "trailingCommas": "none"
+    }
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  }
+}
