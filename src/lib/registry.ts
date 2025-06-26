@@ -8,7 +8,7 @@ interface BaseItem<T extends "command" | "event"> {
   type: T;
 }
 
-export interface SlashCommand extends BaseItem<"command"> {
+export interface Command extends BaseItem<"command"> {
   data: SlashCommandBuilder;
   execute(interaction: ChatInputCommandInteraction): void | Promise<void>;
 }
@@ -20,12 +20,12 @@ export interface Event<E extends keyof ClientEvents = keyof ClientEvents>
   execute(...args: ClientEvents[E]): void | Promise<void>;
 }
 
-export type Item = SlashCommand | Event;
+export type Item = Command | Event;
 
 export function defineCommand(
   data: SlashCommandBuilder,
-  execute: SlashCommand["execute"]
-): SlashCommand {
+  execute: Command["execute"]
+): Command {
   return { type: "command", data, execute };
 }
 

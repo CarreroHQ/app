@@ -1,14 +1,14 @@
 import { Collection, Client as DiscordClient } from "discord.js";
 
 import { env } from "~/lib/env";
-import type { Event, Item, SlashCommand } from "~/lib/registry";
+import type { Command, Event, Item } from "~/lib/registry";
 
 import * as commands from "~/modules/core/commands";
 import * as dummy from "~/modules/dummy";
 
 export class Client extends DiscordClient {
   readonly modules = [commands, dummy];
-  readonly commands = new Collection<string, Omit<SlashCommand, "type">>();
+  readonly commands = new Collection<string, Omit<Command, "type">>();
 
   constructor() {
     super({ intents: [] });
