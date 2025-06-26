@@ -1,6 +1,6 @@
 import { REST, Routes } from "discord.js";
 import { Client } from "~/lib/client";
-import { env } from "./lib/env";
+import { env } from "~/lib/env";
 
 const client = new Client();
 

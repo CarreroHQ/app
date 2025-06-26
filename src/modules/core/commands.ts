@@ -1,6 +1,6 @@
 import { MessageFlags } from "discord.js";
+import { client } from "~/index";
 import { defineEvent } from "~/lib/registry";
-import { client } from "../../index.ts";
 
 const commandRun = defineEvent("interactionCreate", async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
