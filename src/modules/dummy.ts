@@ -10,4 +10,4 @@ const dummy = defineCommand(
   }
 );
 
-export const registry = [dummy];
+export const items = [dummy];

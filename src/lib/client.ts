@@ -28,11 +28,8 @@ export class Client extends DiscordClient {
     this.commands.clear();
   }
 
-  registerModule(
-    module: { registry: Item[] },
-    filter?: (item: Item) => boolean
-  ) {
-    for (const item of module.registry) {
+  registerModule(module: { items: Item[] }, filter?: (item: Item) => boolean) {
+    for (const item of module.items) {
       if (filter && !filter(item)) continue;
 
       if (item.type === "command") {
@@ -43,7 +40,7 @@ export class Client extends DiscordClient {
           item.execute(...args);
         this[item.once ? "once" : "on"](item.name, handler);
       } else {
-        console.warn("Unknown registry item", item);
+        console.warn("Unknown item", item);
       }
     }
   }

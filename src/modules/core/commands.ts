@@ -21,4 +21,4 @@ const commandRun = defineEvent("interactionCreate", async (interaction) => {
   }
 });
 
-export const registry = [commandRun];
+export const items = [commandRun];
