@@ -56,7 +56,6 @@
         "noNegationElse": "on",
         "noNestedTernary": "on",
         "noParameterAssign": "on",
-        "noParameterProperties": "on",
         "noShoutyConstants": "on",
         "noSubstr": "on",
         "noUnusedTemplateLiteral": "on",
