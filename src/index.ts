@@ -11,10 +11,10 @@ const client = new Client();
  * This mode skips event registration and does not start the client.
  */
 if (process.argv.includes("deploy")) {
-  await client.loadModules((item) => item.type === "command");
-
   const rest = new REST().setToken(env.DISCORD_TOKEN);
-  const payload = client.commands.map((command) => command.data.toJSON());
+  const payload = client.modules.commands.map((command) =>
+    command.data.toJSON()
+  );
 
   try {
     await rest.put(Routes.applicationCommands(env.DISCORD_APPLICATION_ID), {
@@ -31,6 +31,6 @@ if (process.argv.includes("deploy")) {
   }
 }
 
-await client.run();
+await client.login();
 
 export { client };

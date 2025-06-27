@@ -1,11 +1,11 @@
 import { MessageFlags } from "discord.js";
 import { client } from "~/index";
-import { defineEvent } from "~/lib/registry";
+import { defineEvent } from "~/lib/factories/event";
 
 const commandRun = defineEvent("interactionCreate", async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
-  const command = client.commands.get(interaction.commandName);
+  const command = client.modules.commands.get(interaction.commandName);
   if (!command) return;
 
   try {
@@ -22,3 +22,7 @@ const commandRun = defineEvent("interactionCreate", async (interaction) => {
 });
 
 export const items = [commandRun];
+
+export const meta = {
+  hidden: true
+};
