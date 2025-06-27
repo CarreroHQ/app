@@ -3,6 +3,7 @@
   "scripts": {
     "start": "bun run src",
     "dev": "bun run --watch src",
+    "pino": "pino-pretty -i pid,hostname -U false -X message:reset",
     "typecheck": "bun run tsc",
     "format": "biome format",
     "format:fix": "biome format --write",
@@ -12,12 +13,18 @@
     "check:fix": "biome check --write --unsafe"
   },
   "dependencies": {
+    "@octokit/rest": "^22.0.0",
+    "dedent": "^1.6.0",
     "discord.js": "^14.21.0",
+    "lru-cache": "^11.1.0",
+    "pino": "^9.7.0",
+    "pretty-ms": "^9.2.0",
     "zod": "^3.25.67"
   },
   "devDependencies": {
     "@biomejs/biome": "2.0.5",
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "pino-pretty": "^13.0.0"
   },
   "peerDependencies": {
     "typescript": "^5.8.3"
