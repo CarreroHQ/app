@@ -53,11 +53,6 @@ const acknowledgements = defineCommand(
           )
           .addFields([
             {
-              name: "License",
-              value:
-                "[BSD 3-Clause](https://spdx.org/licenses/BSD-3-Clause.html)"
-            },
-            {
               name: "Uptime",
               value: `<t:${Math.floor(Date.now() / 1000 - process.uptime())}:R>`,
               inline: true
