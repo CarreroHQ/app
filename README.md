@@ -6,7 +6,7 @@
 [![Code quality](https://github.com/martwypoeta/bot/actions/workflows/quality.yml/badge.svg)](https://github.com/martwypoeta/bot/actions/workflows/quality.yml)
 [![Typecheck](https://github.com/martwypoeta/bot/actions/workflows/typecheck.yml/badge.svg)](https://github.com/martwypoeta/bot/actions/workflows/typecheck.yml)
 
-Modular discord bot written in [Bun](https://bun.sh/docs)
+Modular discord bot written in [Bun](https://bun.sh/)
 
 ## What do we mean by modular?
 
@@ -19,6 +19,49 @@ Many bots separate commands and events into different folders, which can scatter
 - [TypeScript: Modules - Introduction](https://www.typescriptlang.org/docs/handbook/modules/introduction.html)
 - [Wikipedia: Separation of concerns](https://en.wikipedia.org/wiki/Separation_of_concerns)
 - [Wikipedia: Cohesion (computer science)](https://en.wikipedia.org/wiki/Cohesion_(computer_science))
+
+## Usage
+
+To run the bot, you'll need to have [Bun](https://bun.sh/) installed. Ensure that Bun is set up correctly before continuting.
+
+### Environment setup
+
+First, configure environment variables:
+
+1. Copy `.env.example` file to `.env`.
+2. Fill in every empty variable.
+3. Voilà!
+
+### Using scripts
+
+This project includes the following scripts:
+
+- [create-emotes.ts](./scripts/create-emotes.ts)
+- [register-commands.ts](./scripts/register-commands.ts)
+
+You can invoke any script with the command: `bun run scripts/{...}.ts`.
+
+#### create-emotes.ts
+
+Run this script when setting up a new application or if you're missing emotes.
+
+#### register-commands.ts
+
+Run this script whenever there are changes to the command structure. It ensures commands are properly synchronized with Discord API.
+
+### Running
+
+To start the bot, run following:
+
+```sh
+bun start
+```
+
+If you wish to have hot-reloading, run following:
+
+```sh
+bun dev
+```
 
 ## License
 
