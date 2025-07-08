@@ -1,5 +1,12 @@
 import { Octokit } from "@octokit/rest";
-import { Colors, EmbedBuilder, SlashCommandBuilder } from "discord.js";
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  Colors,
+  EmbedBuilder,
+  SlashCommandBuilder
+} from "discord.js";
 import { LRUCache } from "lru-cache";
 import { defineCommand } from "~/lib/factories/command";
 
@@ -46,12 +53,19 @@ const application = defineCommand(
       embeds: [
         new EmbedBuilder()
           .setColor(Colors.Greyple)
-          .setTitle(`${interaction.client.user.displayName}[${repoData.name}]`)
-          .setURL("https://github.com/martwypoeta/bot")
+          .setTitle(
+            `${interaction.client.applicationEmojis.get("Github")} ${interaction.client.user.displayName}[${repoData.name}]`
+          )
+          .setURL(repoData.url)
           .addFields([
             {
               name: "Uptime",
               value: `<t:${Math.floor(Date.now() / 1000 - process.uptime())}:R>`,
+              inline: true
+            },
+            {
+              name: "Memory",
+              value: `${(process.memoryUsage.rss() / 1024 / 1024).toFixed(2)} MiB`,
               inline: true
             },
             {
@@ -68,6 +82,18 @@ const application = defineCommand(
           .setFooter({
             text: `${repoData.stargazers_count} Stars`
           })
+      ],
+      components: [
+        new ActionRowBuilder<ButtonBuilder>().addComponents(
+          new ButtonBuilder()
+            .setStyle(ButtonStyle.Link)
+            .setLabel("Github")
+            .setURL(repoData.url),
+          new ButtonBuilder()
+            .setStyle(ButtonStyle.Link)
+            .setLabel("Chat with us")
+            .setURL("https://discord.gg/xsusYDb8Rk")
+        )
       ]
     });
   }
