@@ -1,9 +1,11 @@
 import { MessageFlags } from "discord.js";
-import { client } from "~/index";
+import type { Client } from "~/lib/client";
 import { defineEvent } from "~/lib/factories/event";
 
 const commandRun = defineEvent("interactionCreate", async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
+
+  const client = interaction.client as Client;
 
   const command = client.modules.commands.get(interaction.commandName);
   if (!command) return;
