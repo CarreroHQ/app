@@ -21,7 +21,7 @@
     "pg": "^8.16.3",
     "pino": "^9.7.0",
     "pretty-ms": "^9.2.0",
-    "zod": "^3.25.75"
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@biomejs/biome": "2.0.6",
