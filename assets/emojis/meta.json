@@ -2,6 +2,11 @@
   {
     "_comment": "Part of Octoicons library. https://primer.style/octicons/",
     "name": "Signed_Commit",
-    "source": "Octoicons_Verified.png"
+    "source": "Octicons_Verified.png"
+  },
+  {
+    "_comment": "Part of Octoicons library. https://primer.style/octicons/",
+    "name": "Github",
+    "source": "Octicons_Github.png"
   }
 ]

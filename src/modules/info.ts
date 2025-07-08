@@ -62,7 +62,7 @@ const application = defineCommand(
             {
               name: "Latest commit",
               value: // TODO: make it fetch current commit instead of latest one
-              `[\`${commitData.sha.slice(0, 7)}\`](${commitData.html_url})${commitData.commit.verification?.verified ? ` ${interaction.client.application.emojis.fetch()}` : ""} ${commitData.commit.message} - ${commitData.commit.author?.name}`
+              `[\`${commitData.sha.slice(0, 7)}\`](${commitData.html_url})${commitData.commit.verification?.verified ? ` ${interaction.client.applicationEmojis.get("Signed_Commit")}` : ""} ${commitData.commit.message} - ${commitData.commit.author?.name}`
             }
           ])
           .setFooter({

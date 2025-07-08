@@ -1,4 +1,7 @@
+/** biome-ignore-all lint/nursery/noImportCycles: invalid */
+
 import { type Client, Collection } from "discord.js";
+
 import type { Command } from "~/lib/types/command";
 import type { Event } from "~/lib/types/event";
 import type { Item } from "~/lib/types/item";
