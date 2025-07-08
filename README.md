@@ -36,14 +36,14 @@ First, configure environment variables:
 
 This project includes the following scripts:
 
-- [create-emotes.ts](./scripts/create-emotes.ts)
+- [create-emojis.ts](./scripts/create-emojis.ts)
 - [register-commands.ts](./scripts/register-commands.ts)
 
 You can invoke any script with the command: `bun run scripts/{...}.ts`.
 
-#### create-emotes.ts
+#### create-emojis.ts
 
-Run this script when setting up a new application or if you're missing emotes.
+Run this script when setting up a new application or if you're missing emojis.
 
 #### register-commands.ts
 
