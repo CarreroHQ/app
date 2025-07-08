@@ -17,7 +17,7 @@ async function fetchWithCache<T>(
   return data;
 }
 
-const acknowledgements = defineCommand(
+const application = defineCommand(
   new SlashCommandBuilder()
     .setName("application")
     .setDescription("List all major informations about application."),
@@ -45,12 +45,9 @@ const acknowledgements = defineCommand(
       content: "",
       embeds: [
         new EmbedBuilder()
-          .setColor(Colors.Blue)
+          .setColor(Colors.Greyple)
           .setTitle(`${interaction.client.user.displayName}[${repoData.name}]`)
           .setURL("https://github.com/martwypoeta/bot")
-          .setDescription(
-            `👁️${repoData.watchers_count} 🍴${repoData.forks_count} ⭐${repoData.stargazers_count}`
-          )
           .addFields([
             {
               name: "Uptime",
@@ -65,12 +62,15 @@ const acknowledgements = defineCommand(
             {
               name: "Latest commit",
               value: // TODO: make it fetch current commit instead of latest one
-              `[\`${commitData.sha.slice(0, 7)}\`](${commitData.html_url})${commitData.commit.verification?.verified ? " ☑️" : ""} ${commitData.commit.message} - ${commitData.commit.author?.name}`
+              `[\`${commitData.sha.slice(0, 7)}\`](${commitData.html_url})${commitData.commit.verification?.verified ? ` ${interaction.client.application.emojis.fetch()}` : ""} ${commitData.commit.message} - ${commitData.commit.author?.name}`
             }
           ])
+          .setFooter({
+            text: `${repoData.stargazers_count} Stars`
+          })
       ]
     });
   }
 );
 
-export const items = [acknowledgements];
+export const items = [application];
