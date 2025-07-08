@@ -1,8 +1,10 @@
 import { REST, Routes } from "discord.js";
+import { drizzle } from "drizzle-orm/node-postgres";
 import { Client } from "~/lib/client";
 import { env } from "~/lib/env";
 
 const client = new Client();
+const db = drizzle(env.DATABASE_URL);
 
 /**
  * While in deploy mode, we load only slash commands into memory using
@@ -33,4 +35,4 @@ if (process.argv.includes("deploy")) {
 
 await client.login();
 
-export { client };
+export { client, db };
