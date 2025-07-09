@@ -92,7 +92,7 @@ const application = defineCommand(
           new ButtonBuilder()
             .setStyle(ButtonStyle.Link)
             .setLabel("Chat with us")
-            .setURL("https://discord.gg/xsusYDb8Rk")
+            .setURL(interaction.client.config.get("discordUrl") as string)
         )
       ]
     });
