@@ -1,0 +1,79 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  discordId String   @unique
+  profile   Profile?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Profile {
+  id          Int                  @id @default(autoincrement())
+  user        User                 @relation(fields: [userId], references: [id])
+  userId      Int                  @unique
+  xp          Int                  @default(0)
+  bank        Int                  @default(0)
+  purse       Int                  @default(0)
+  businesses  Business[]
+  shares      BusinessShare[]
+  memberships OrganizationMember[]
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+}
+
+model Business {
+  id             Int             @id @default(autoincrement())
+  owner          Profile         @relation(fields: [ownerId], references: [id])
+  ownerId        Int
+  organization   Organization?   @relation(fields: [organizationId], references: [id])
+  organizationId Int?
+  type           String
+  name           String
+  dividendRate   Float
+  shareholders   BusinessShare[]
+  collectedAt    DateTime
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model BusinessShare {
+  business   Business @relation(fields: [businessId], references: [id])
+  businessId Int
+  profile    Profile  @relation(fields: [profileId], references: [id])
+  profileId  Int
+  amount     Int
+
+  @@id([businessId, profileId])
+}
+
+model Organization {
+  id         Int                  @id @default(autoincrement())
+  name       String
+  members    OrganizationMember[]
+  businesses Business[]
+  createdAt  DateTime             @default(now())
+  updatedAt  DateTime             @updatedAt
+}
+
+model OrganizationMember {
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId Int
+  profile        Profile      @relation(fields: [profileId], references: [id])
+  profileId      Int
+  role           Role
+
+  @@id([organizationId, profileId])
+}
+
+enum Role {
+  USER
+  ADMIN
+}

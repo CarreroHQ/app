@@ -80,7 +80,8 @@
         "useForOf": "on",
         "useShorthandAssign": "on",
         "useThrowNewError": "on",
-        "useTrimStartEnd": "on"
+        "useTrimStartEnd": "on",
+        "noNonNullAssertion": "off"
       },
       "suspicious": {
         "recommended": true,

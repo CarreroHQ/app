@@ -1,0 +1,14 @@
+node_modules
+
+.github
+.vscode
+
+.env*
+
+.git
+.gitattributes
+.gitignore
+
+biome.json
+LICENSE
+README.md

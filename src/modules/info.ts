@@ -9,6 +9,7 @@ import {
 } from "discord.js";
 import { LRUCache } from "lru-cache";
 import { defineCommand } from "~/lib/factories/command";
+import { levelForXp, xpForLevel, xpToLevelUp } from "~/lib/utils";
 
 const octokit = new Octokit();
 const octokitCache = new LRUCache({ max: 10, ttl: 1000 * 60 * 5 });
@@ -99,4 +100,86 @@ const application = defineCommand(
   }
 );
 
-export const items = [application];
+const profile = defineCommand(
+  new SlashCommandBuilder()
+    .setName("profile")
+    .setDescription("Check a user's profile details.")
+    .addUserOption((option) =>
+      option.setName("target").setDescription("Target user").setRequired(false)
+    ),
+  async (interaction) => {
+    const target = interaction.options.getUser("target") || interaction.user;
+    const prisma = interaction.client.prisma;
+
+    let user = await prisma.user.findUnique({
+      where: { discordId: target.id },
+      include: {
+        profile: {
+          include: {
+            businesses: true,
+            shares: { include: { business: true } },
+            memberships: { include: { organization: true } }
+          }
+        }
+      }
+    });
+
+    if (!user) {
+      await interaction.reply("User not found in database.");
+      return;
+    }
+
+    if (!user.profile && target.id === interaction.user.id) {
+      await prisma.profile.create({ data: { userId: user.id } });
+      user = (await prisma.user.findUnique({
+        where: { id: user.id },
+        include: {
+          profile: {
+            include: {
+              businesses: true,
+              shares: { include: { business: true } },
+              memberships: { include: { organization: true } }
+            }
+          }
+        }
+      }))!;
+    }
+
+    if (!user?.profile) {
+      await interaction.reply(
+        `${target.id === interaction.user.id ? "You" : "That user"} do not have a profile.`
+      );
+      return;
+    }
+
+    const { xp = 0, bank = 0, purse = 0 } = user.profile;
+    const level = levelForXp(xp);
+    const currentLevelXp = xp - xpForLevel(level);
+    const xpToNextLevel = xpForLevel(level + 1) - xpForLevel(level);
+
+    await interaction.reply({
+      embeds: [
+        new EmbedBuilder()
+          .setColor(Colors.Greyple)
+          .setAuthor({
+            name: target.username,
+            iconURL: target.displayAvatarURL()
+          })
+          .addFields([
+            { name: "Bank", value: `$${bank}`, inline: true },
+            { name: "Purse", value: `$${purse}`, inline: true },
+            {
+              name: "Level (XP)",
+              value: `${level} (${currentLevelXp}/${xpToNextLevel})`,
+              inline: true
+            }
+          ])
+          .setFooter({
+            text: `Profile ID: ${user.profile.id}`
+          })
+      ]
+    });
+  }
+);
+
+export const items = [application, profile];

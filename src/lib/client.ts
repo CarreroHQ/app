@@ -1,5 +1,5 @@
+import { PrismaClient } from "@prisma/client";
 import { Collection, Client as DiscordClient } from "discord.js";
-
 import { ModuleLoader } from "~/lib/loader";
 import * as commands from "~/modules/core/commands";
 import * as emojis from "~/modules/core/emojis";
@@ -16,6 +16,7 @@ export class Client extends DiscordClient {
   override readonly applicationEmojis = new Collection<string, string>();
   override readonly modules: InstanceType<typeof ModuleLoader> =
     new ModuleLoader(this, [commands, emojis, ws, info]);
+  override readonly prisma: PrismaClient = new PrismaClient();
 
   constructor() {
     super({ intents: [] });
