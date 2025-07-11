@@ -5,11 +5,14 @@ import {
   ButtonStyle,
   Colors,
   EmbedBuilder,
-  SlashCommandBuilder
+  SlashCommandBuilder,
+  StringSelectMenuBuilder
 } from "discord.js";
 import { LRUCache } from "lru-cache";
+import { config } from "~/lib/config";
 import { defineCommand } from "~/lib/factories/command";
-import { levelForXp, xpForLevel, xpToLevelUp } from "~/lib/utils";
+import { defineEvent } from "~/lib/factories/event";
+import { levelForXp, xpForLevel } from "~/lib/utils";
 
 const octokit = new Octokit();
 const octokitCache = new LRUCache({ max: 10, ttl: 1000 * 60 * 5 });
@@ -93,7 +96,7 @@ const application = defineCommand(
           new ButtonBuilder()
             .setStyle(ButtonStyle.Link)
             .setLabel("Chat with us")
-            .setURL(interaction.client.config.get("discordUrl") as string)
+            .setURL(config.discordUrl)
         )
       ]
     });
@@ -160,9 +163,9 @@ const profile = defineCommand(
     await interaction.reply({
       embeds: [
         new EmbedBuilder()
-          .setColor(Colors.Greyple)
+          .setColor("#f8791f")
           .setAuthor({
-            name: target.username,
+            name: `${target.username} (${user.profile.id})`,
             iconURL: target.displayAvatarURL()
           })
           .addFields([
@@ -174,12 +177,144 @@ const profile = defineCommand(
               inline: true
             }
           ])
-          .setFooter({
-            text: `Profile ID: ${user.profile.id}`
-          })
+      ],
+      components: [
+        new ActionRowBuilder<ButtonBuilder>().addComponents(
+          new ButtonBuilder()
+            .setStyle(ButtonStyle.Secondary)
+            .setLabel("Businesses")
+            .setCustomId(`show_businesses:${target.id}`),
+          new ButtonBuilder()
+            .setStyle(ButtonStyle.Secondary)
+            .setLabel("Shares")
+            .setCustomId(`show_shares:${target.id}`),
+          ...(target.id === interaction.user.id
+            ? [
+                new ButtonBuilder()
+                  .setStyle(ButtonStyle.Primary)
+                  .setLabel("⚙️")
+                  .setCustomId("show_settings")
+              ]
+            : [])
+        )
       ]
     });
   }
 );
 
-export const items = [application, profile];
+const events = defineEvent("interactionCreate", async (interaction) => {
+  if (
+    interaction.isButton() &&
+    interaction.customId.startsWith("show_businesses:")
+  ) {
+    const userId = interaction.customId.split(":")[1];
+    const prisma = interaction.client.prisma;
+
+    const user = await interaction.client.users.fetch(`${userId}`);
+
+    const userData = await prisma.user.findUnique({
+      where: { discordId: userId },
+      include: {
+        profile: {
+          include: {
+            businesses: true
+          }
+        }
+      }
+    });
+
+    if (!userData?.profile) {
+      await interaction.reply("User not found or has no profile.");
+      return;
+    }
+
+    if (
+      !userData.profile.businesses ||
+      userData.profile.businesses.length === 0
+    ) {
+      await interaction.reply("This user has no businesses.");
+      return;
+    }
+
+    const businesses = userData.profile.businesses;
+
+    const embed = new EmbedBuilder()
+      .setColor("#3498db")
+      .setTitle(`${user.username}'s Business`)
+      .addFields([
+        {
+          name: "Name",
+          value: String(businesses[0].name),
+          inline: true
+        },
+        {
+          name: "Type",
+          value: String(businesses[0].type),
+          inline: true
+        }
+      ]);
+
+    const components: ActionRowBuilder<StringSelectMenuBuilder>[] = [];
+    if (businesses.length > 1) {
+      components.push(
+        new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+          new StringSelectMenuBuilder()
+            .setCustomId(`select_business:${userId}`)
+            .setPlaceholder("Select a business")
+            .addOptions(
+              businesses
+                .map((business) => ({
+                  label: business.name,
+                  value: `check_business:${userId}:${business.id}`
+                }))
+                .concat([
+                  {
+                    label: "Go Back",
+                    value: `back_businesses:${userId}`,
+                    emoji: "⬅️"
+                  }
+                ])
+            )
+        )
+      );
+    }
+    await interaction.reply({
+      embeds: [embed],
+      components: components.length > 0 ? components.flat() : []
+    });
+  } else if (
+    interaction.isStringSelectMenu() &&
+    interaction.customId.startsWith("select_business:")
+  ) {
+    if (interaction.values[0]?.startsWith("back_businesses:")) {
+      interaction.reply({
+        content: "feenko zrub bo ja nie umiem"
+      });
+    }
+
+    const businessId = interaction.values[0].split(":")[2];
+
+    const prisma = interaction.client.prisma;
+    const business = await prisma.business.findUnique({
+      where: { id: Number(businessId) },
+      include: { owner: true }
+    });
+
+    if (!business) {
+      await interaction.reply("Business not found.");
+      return;
+    }
+
+    const embed = new EmbedBuilder()
+      .setColor("#3498db")
+      .setTitle("Business Details")
+      .addFields([
+        { name: "Name", value: business.name, inline: true },
+        { name: "Type", value: business.type, inline: true }
+      ]);
+
+    await interaction.update({ embeds: [embed] });
+  }
+});
+
+export const items = [application, profile, events];

@@ -35,7 +35,7 @@ model Business {
   ownerId        Int
   organization   Organization?   @relation(fields: [organizationId], references: [id])
   organizationId Int?
-  type           String
+  type           String          
   name           String
   dividendRate   Float
   shareholders   BusinessShare[]
