@@ -1,4 +1,4 @@
-import { type AutocompleteInteraction, MessageFlags } from "discord.js";
+import { MessageFlags } from "discord.js";
 import type { Client } from "~/lib/client";
 import { defineEvent } from "~/lib/factories/event";
 

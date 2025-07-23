@@ -35,6 +35,10 @@ model Business {
   ownerId        Int
   organization   Organization?   @relation(fields: [organizationId], references: [id])
   organizationId Int?
+
+  isPublic       Boolean?        @default(true)
+  acceptInvestors Boolean?       @default(false)
+
   type           String          
   name           String
   dividendRate   Float
